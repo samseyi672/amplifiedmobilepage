@@ -1,25 +1,69 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import ImageList from './components/ImageList';
+import ajaxconfig from './components/AjaxConfig';
+import Header from './components/Header';
 
-function App() {
+class App extends React.Component {
+  state  = {images:[]}
+  callPulseNews = async () => {
+    var response = await ajaxconfig.get(`/api/rssnews`).then(res=>{
+    this.setState({images:res.data})
+    // console.log(res.data) ;
+    response = res.data ;
+    localStorage.setItem('key', JSON.stringify(response));
+     return res.data
+    });
+}
+componentDidMount() {
+   //data loading
+    const data = this.callPulseNews();
+}
+render(){
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="container">
+      <ImageList imageresponse={this.state.images}/>
+      </div>
     </div>
   );
 }
 
+}
 export default App;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
